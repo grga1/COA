@@ -1,0 +1,7 @@
+addi $s0, $zero, 8 # $s0 = $zero + 8
+addi $s1, $zero, 17 # $s1 = $zero + 17
+addi $s2, $zero, 39 # $s2 = $zero + 39
+addi $s3, $zero, 106 # $s3 = $zero + 106
+add $t0, $s0, $s1 # $t0 = $s0 + $s1 (8 + 17)
+add $t1, $s2, $s3 # $t1 = $s2 + $s3 (39 + 106)
+add $s0, $t0, $t1 # $s0 = $t0 + $t1 (25 + 145)
