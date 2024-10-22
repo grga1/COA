@@ -1,0 +1,44 @@
+(* • Да се напише асемблерска програма која ќе прочита број од
+стандарден влез и ќе испечати “prost” ако бројот е прост или “ne
+e prost” во случај бројот да не е прост. *)
+
+# $s0 = prochitaniot broj
+# $t0 = brojach
+# $t1 = $s0/2 (granica za iteracija)
+# $t2 = konstantna vrednost 2
+# $t3 = ostatok od delenje $s0 so brojach
+.data
+prost: .asciiz "prost"
+neEProst: .asciiz "ne e prost"
+.text
+li $t0, 2 # inicjalizacija na brojach
+li $t2, 2 # konstantna vrednost 2
+# chitanje na broj od stdin
+li $v0, 5
+syscall
+add $s0, $zero, $v0 # prefrlanje na procitaniot
+broj vo $s0
+div $s0, $t2 # $lo = $vnesen_broj / 2
+mflo $t1 # $t1 = $s0/2
+Задача 3 – решение
+loop: bgt $t0, $t1, endLoop # iteracija od 0 do $s0/2
+div $s0, $t0 # $hi = $vnesen_broj % $brojach
+mfhi $t3
+beqz $t3, neprost # ostatok == 0 => ne e prost
+addi $t0, $t0, 1 # inkrementiranje brojach
+j loop
+endLoop:
+# ciklusot iteriral do $vnesen_broj / 2 i ne nashol
+delitel => prost
+la $a0, prost # vcitaj adresa na string-ot prost
+j terminate
+neprost:
+# brojot ne e prost
+la $a0, neEProst # vcitaj adresa na string-ot neEProst
+terminate:
+# sistemski povik za pecatenje
+li $v0, 4
+syscall
+# sistemski povik za terminiranje
+li $v0, 10
+syscall
