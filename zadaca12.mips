@@ -1,0 +1,77 @@
+(* Да се напише програма која ќе чита броеви од стандарден влез сѐ
+додека не се внесе 0. По внесување на 0, да се испечати
+разликата меѓу збировите на броевите кои се внесени на парни и
+непарни позиции.
+• Пример: 2 3 1 7 12 3 5
+• Сума парни: 13
+• Сума непарни: 20
+• Печатење: 13 – 20 = -7 *)
+
+# $s0 = zbir parni pozicii
+# $s1 = zbir neparni pozii
+# $t0 = vnesen broj
+# $t1 = konstantna vrednost 2
+# $t2 = ostatok /2
+# $t3 = brojach
+.data
+sumaParni: .asciiz "Zbirot na broevite na parni pozicii e: "
+sumaNeparni: .asciiz "Zbirot na broevite na neparni pozicii e: "
+razlika: .asciiz "Razlikata megju zbirot na parnite i neparnite
+pozicii e: "
+newLine: .asciiz "\n"
+.text
+li $t1, 2
+li $t3, 1
+loop:
+li $v0, 5 # citanje broj od stdin
+syscall
+add $t0, $zero, $v0 # prefrluvanje na procitan broj vo $t0
+beqz $t0, endLoop # ako e procitano 0, kraj
+div $t3, $t1 # $hi = brojach % 2
+mfhi $t2 # ostatok vo $t2
+beqz $t2, parnaPozicija # brojachot e paren broj (parna pozicija)
+add $s1, $s1, $t0 # suma na neparni pozicii
+j increment
+parnaPozicija:
+add $s0, $s0, $t0 # suma na parni pozicii
+Задача 5 – решение
+increment:
+add $t3, $t3, 1 #
+inkrementiranje brojach
+j loop
+endLoop:
+# ispechati labela za parni
+la $a0, sumaParni
+li $v0, 4
+syscall
+# ispechati suma parni
+add $a0, $zero, $s0
+li $v0, 1
+syscall
+# ispechati nov red
+la $a0, newLine
+li $v0, 4
+syscall
+# ispechati labela za neparni
+la $a0, sumaNeparni
+li $v0, 4
+syscall
+# ispechati suma neparni
+add $a0, $zero, $s1
+li $v0, 1
+syscall
+# ispechati nov red
+la $a0, newLine
+li $v0, 4
+syscall
+# ispechati labela za razlika
+la $a0, razlika
+li $v0, 4
+syscall
+# ispechati razlika
+sub $a0, $s0, $s1
+li $v0, 1
+syscall
+# kraj
+li $v0, 10
+syscall
