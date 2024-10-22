@@ -1,0 +1,37 @@
+(* • Да се напише асемблерска програма која ќе чита броеви од
+стандарден влез сѐ додека не се внесе 0. По внесување на 0, да се
+испечати најголемиот број од претходно внесените броеви. *)
+
+.data
+najgolemBroj: .asciiz "Najgolemiot broj e: "
+.text
+# $s0 = najgolemiot broj
+# $t0 = momentalno vneseniot broj
+addi $t0, $zero, -1 # inicijalizacija na $t0
+addi $s0, $zero, -2147483647 # min INT_32
+value
+loop:
+li $v0, 5 # citanje broj od stdin
+syscall
+add $t0, $zero $v0 # $t0 = vnesen_broj
+beqz $t0, endLoop # ako e vneseno 0, kraj
+bgt $t0, $s0, pogolem # vneseniot broj e
+pogolem od max, update
+j loop
+Задача 4 – решение
+pogolem:
+add $s0, $zero, $t0 # azuriraj max
+broj
+j loop
+endLoop:
+# pechati labela
+la $a0, najgolemBroj
+li $v0, 4
+syscall
+# pechati max broj
+add $a0, $zero, $s0
+li $v0, 1
+syscall
+# sistemski povik za terminiranje
+li $v0, 10
+syscall
